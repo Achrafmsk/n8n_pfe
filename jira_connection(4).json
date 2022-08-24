@@ -1,0 +1,239 @@
+{
+  "name": "jira_connection",
+  "nodes": [
+    {
+      "parameters": {},
+      "name": "Start",
+      "type": "n8n-nodes-base.start",
+      "typeVersion": 1,
+      "position": [
+        -740,
+        -740
+      ]
+    },
+    {
+      "parameters": {
+        "events": [
+          "jira:issue_created"
+        ],
+        "additionalFields": {}
+      },
+      "name": "Jira Trigger",
+      "type": "n8n-nodes-base.jiraTrigger",
+      "typeVersion": 1,
+      "position": [
+        -240,
+        -340
+      ],
+      "webhookId": "0edf991f-1e3b-4c04-b425-f89cefda9fe2",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "7",
+          "name": "Jira SW Cloud account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "command": "=curl --request POST \\\n  --header 'Authorization: Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik16bERNemsxTVRoRlFVRTJRa0ZGT0VGRk9URkJOREJDTVRRek5EZzJSRVpDT1VKRFJrVXdNZyJ9.eyJodHRwczovL2F0bGFzc2lhbi5jb20vb2F1dGhDbGllbnRJZCI6IlhydWNOODlSZ3ZNeVBja3VQQ2lMN2lKWllwSEtGRGJxIiwiaHR0cHM6Ly9hdGxhc3NpYW4uY29tL2VtYWlsRG9tYWluIjoiZ21haWwuY29tIiwiaHR0cHM6Ly9hdGxhc3NpYW4uY29tL3N5c3RlbUFjY291bnRJZCI6IjYyODI1MGEzZjAzMDJlMDA2OGJjNDA5ZiIsImh0dHBzOi8vYXRsYXNzaWFuLmNvbS9zeXN0ZW1BY2NvdW50RW1haWxEb21haW4iOiJjb25uZWN0LmF0bGFzc2lhbi5jb20iLCJodHRwczovL2F0bGFzc2lhbi5jb20vdmVyaWZpZWQiOnRydWUsImh0dHBzOi8vYXRsYXNzaWFuLmNvbS9maXJzdFBhcnR5IjpmYWxzZSwiaHR0cHM6Ly9hdGxhc3NpYW4uY29tLzNsbyI6dHJ1ZSwiaXNzIjoiaHR0cHM6Ly9hdGxhc3NpYW4tYWNjb3VudC1wcm9kLnB1czIuYXV0aDAuY29tLyIsInN1YiI6ImF1dGgwfDYxZmZhMmYzYzRlMmM5MDA2YWU1MGZkZCIsImF1ZCI6ImFwaS5hdGxhc3NpYW4uY29tIiwiaWF0IjoxNjYxMTYxNzg1LCJleHAiOjE2NjExNjUzODUsImF6cCI6IlhydWNOODlSZ3ZNeVBja3VQQ2lMN2lKWllwSEtGRGJxIiwic2NvcGUiOiJtYW5hZ2U6amlyYS1jb25maWd1cmF0aW9uIG1hbmFnZTpqaXJhLXByb2plY3QgbWFuYWdlOmppcmEtd2ViaG9vayB3cml0ZTpqaXJhLXdvcmsgcmVhZDpqaXJhLXdvcmsgcmVhZDpqaXJhLXVzZXIgbWFuYWdlOmppcmEtZGF0YS1wcm92aWRlciJ9.GZumQxV4K-DBYsRfThotv5oz071BiJ8JIO29vzsPj_i3DWYyBmPCbe6CJ6qtNCw6ow0oyZuHBoVOVsRfx3__eqePMMr_ZHJLN3rLuuAPIVnunf8ekcu1wsjSvN4CDXIqYCUHE9fvZzX19DutcxniY5BS9ncks95vjR91ApjQwjIozd8YK4uTvF0KhQXgnnYCylYaQ82uoWyOiPeIwbJjZBdJ2Di_uxpcxE7FdVT6Abv0kstf2mZL67ABhuGMXgy2IuMr1t_p-44unFp18Jq1TidZHsEikvzT9uoN0ednuieiGpUF6r2gbsg0BGkP16QN2sGzpIlXELfwgDss3Tpssw' \\\n  --header 'Accept: application/json' \\\n  --header 'Content-Type: application/json' \\\n  --data '\n    {\n      \"key\": \"PJ19\",\n      \"name\": \"{{$node[\"data extraction\"].json[\"Project Name\"]}}\",\n      \"projectTypeKey\": \"software\",\n      \"projectTemplateKey\": \"com.pyxis.greenhopper.jira:gh-simplified-agility-scrum\",\n      \"description\": \"project created through n8n nodemation\",\n      \"leadAccountId\": \"61ffa2f3c4e2c9006ae50fdd\",\n      \"url\": \"http://atlassian.com\",\n      \"assigneeType\": \"PROJECT_LEAD\",\n      \"avatarId\": 10200\n    }' \\\n  --url 'https://api.atlassian.com/ex/jira/36fded3e-cff2-460d-9f8f-e9eb2f916edb/rest/api/2/project'"
+      },
+      "name": "create jira project",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        200,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "command": "=curl --request POST \\\n  --url 'https://api.bitbucket.org/2.0/repositories/achraf-msaddak/{{$node[\"data extraction\"].json[\"Project Name\"]}}' \\\n  --header 'Authorization: Bearer bpzcD-TKofIxVcdDtGUVENWogeq0DcSRMFimCeySNEyB0xepYTseJEul7NH6DIOgSxR_MJsD2mkV5haK9fn8XJ201phsx6o9iVfReLv0KAAn14Gaesgel26TosgUKIw==' \\\n  --header 'Accept: application/json'"
+      },
+      "name": "create bitbucket repository",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        200,
+        -520
+      ]
+    },
+    {
+      "parameters": {
+        "keepOnlySet": true,
+        "values": {
+          "string": [
+            {
+              "name": "Project Name",
+              "value": "={{$node[\"Jira Trigger\"].json[\"changelog\"][\"items\"][4][\"toString\"]}}"
+            },
+            {
+              "name": "Servers",
+              "value": "={{$node[\"Jira Trigger\"].json[\"issue\"][\"fields\"][\"customfield_10040\"][0][\"value\"]}} {{$node[\"Jira Trigger\"].json[\"issue\"][\"fields\"][\"customfield_10040\"][1][\"value\"]}} {{$node[\"Jira Trigger\"].json[\"issue\"][\"fields\"][\"customfield_10040\"][2][\"value\"]}}"
+            },
+            {
+              "name": "Users",
+              "value": "={{$node[\"Jira Trigger\"].json[\"issue\"][\"fields\"][\"labels\"][0]}} {{$node[\"Jira Trigger\"].json[\"issue\"][\"fields\"][\"labels\"][1]}} {{$node[\"Jira Trigger\"].json[\"issue\"][\"fields\"][\"labels\"][2]}} {{$node[\"Jira Trigger\"].json[\"issue\"][\"fields\"][\"labels\"][3]}}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "name": "data extraction",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        0,
+        -340
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "requestMethod": "POST",
+        "url": "https://essai-pfe.atlassian.net/rest/api/3/project",
+        "options": {}
+      },
+      "name": "HTTP Request",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -860
+      ],
+      "credentials": {
+        "oAuth2Api": {
+          "id": "4",
+          "name": "OAuth 2.0 "
+        }
+      }
+    },
+    {
+      "parameters": {
+        "filePath": "=/home/achraf/Documents/PFE/JIRA/users/python_scripts/create_multiple_users.py"
+      },
+      "name": "Read Binary File",
+      "type": "n8n-nodes-base.readBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -160
+      ]
+    },
+    {
+      "parameters": {
+        "fileName": "=users.csv",
+        "dataPropertyName": "= {{$node[\"data extraction\"].json[\"Users\"]}}"
+      },
+      "name": "Write Binary File",
+      "type": "n8n-nodes-base.writeBinaryFile",
+      "typeVersion": 1,
+      "position": [
+        560,
+        -520
+      ]
+    },
+    {
+      "parameters": {
+        "executeOnce": "={{true}}",
+        "command": "=python3 {{$node[\"Read Binary File\"].parameter[\"filePath\"]}} users.csv"
+      },
+      "name": "add jira users",
+      "type": "n8n-nodes-base.executeCommand",
+      "typeVersion": 1,
+      "position": [
+        780,
+        -340
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "toFile",
+        "fileFormat": "csv",
+        "binaryPropertyName": "= {{$node[\"data extraction\"].json[\"Users\"]}}",
+        "options": {}
+      },
+      "name": "create users.csv",
+      "type": "n8n-nodes-base.spreadsheetFile",
+      "typeVersion": 1,
+      "position": [
+        340,
+        -340
+      ]
+    }
+  ],
+  "connections": {
+    "Jira Trigger": {
+      "main": [
+        [
+          {
+            "node": "data extraction",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "data extraction": {
+      "main": [
+        [
+          {
+            "node": "create jira project",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "create bitbucket repository",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "create users.csv",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read Binary File": {
+      "main": [
+        [
+          {
+            "node": "add jira users",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Write Binary File": {
+      "main": [
+        [
+          {
+            "node": "add jira users",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "create users.csv": {
+      "main": [
+        [
+          {
+            "node": "Read Binary File",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Write Binary File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "id": 8
+}
